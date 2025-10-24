@@ -28,11 +28,6 @@ EventFront is a sleek, responsive frontend web application for showcasing and ma
 
 ## 📦 Installation
 
-```bash
-git clone https://github.com/TaisyRashford/EventFront.git
-cd EventFront
-# If using plain HTML/CSS/JS
-open index.html
 
 
 ## 🧪 Testing
