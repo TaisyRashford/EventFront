@@ -23,7 +23,7 @@ EventFront is a sleek, responsive frontend web application for showcasing and ma
 | Technology | Purpose |
 |------------|---------|
 | HTML/CSS/JavaScript | Core frontend |
-| React (if used) | UI components |
+| React  | UI components |
 | GitHub Pages | Hosting |
 
 ## 📦 Installation
