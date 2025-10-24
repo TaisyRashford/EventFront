@@ -1,0 +1,17 @@
+{
+  "name": "event-planner-desktop",
+  "version": "1.0.0",
+  "description": "Desktop event planning application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^latest",
+    "electron-builder": "^latest"
+  },
+  "dependencies": {
+    "chart.js": "^4.0.0"
+  }
+}

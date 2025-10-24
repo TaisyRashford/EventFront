@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventPlanner Pro - Christmas Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --christmas-red: #c41e3a;
+            --christmas-green: #228b22;
+            --christmas-gold: #ffd700;
+            --christmas-white: #fffafa;
+            --christmas-dark: #1a472a;
+            --card-color: rgba(255, 250, 250, 0.98);
+            --text-color: #2c3e50;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            --blur: blur(15px);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a472a 0%, #228b22 50%, #c41e3a 100%);
+        }
+
+        /* Christmas Background */
+        .christmas-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(196, 30, 58, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(34, 139, 34, 0.4) 0%, transparent 50%),
+                url('https://images.unsplash.com/photo-1545420333-23a22b18b8fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80');
+            background-size: cover;
+            background-position: center;
+            animation: snowFall 20s linear infinite;
+        }
+
+        @keyframes snowFall {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 0% 100%;
+            }
+        }
+
+        /* Snow Animation */
+        .snow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .snowflake {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Christmas Overlay */
+        .christmas-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+            background: 
+                url('https://images.unsplash.com/photo-1574359411659-61974a5de094?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') 85% 15% / 300px 200px no-repeat,
+                url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80') 15% 85% / 280px 180px no-repeat;
+            animation: twinkle 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.4; }
+            100% { opacity: 0.7; }
+        }
+
+        /* Floating Christmas Elements */
+        .christmas-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .christmas-element {
+            position: absolute;
+            font-size: 42px;
+            opacity: 0.9;
+            animation: floatChristmas 18s ease-in-out infinite;
+            text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.4);
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+        }
+
+        .christmas-element:nth-child(1) { content: '🎄'; left: 8%; top: 15%; animation-delay: 0s; font-size: 60px; }
+        .christmas-element:nth-child(2) { content: '🎅'; left: 88%; top: 25%; animation-delay: 3s; font-size: 55px; }
+        .christmas-element:nth-child(3) { content: '🤶'; left: 12%; top: 75%; animation-delay: 6s; font-size: 58px; }
+        .christmas-element:nth-child(4) { content: '🦌'; left: 78%; top: 65%; animation-delay: 9s; font-size: 52px; }
+        .christmas-element:nth-child(5) { content: '⭐'; left: 45%; top: 10%; animation-delay: 12s; font-size: 65px; }
+        .christmas-element:nth-child(6) { content: '🔔'; left: 35%; top: 85%; animation-delay: 15s; font-size: 48px; }
+        .christmas-element:nth-child(7) { content: '🎁'; left: 65%; top: 25%; animation-delay: 2s; font-size: 50px; }
+        .christmas-element:nth-child(8) { content: '❄️'; left: 25%; top: 45%; animation-delay: 8s; font-size: 45px; }
+
+        @keyframes floatChristmas {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg) scale(1);
+                opacity: 0.8;
+            }
+            25% {
+                transform: translateY(-40px) rotate(90deg) scale(1.3);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-70px) rotate(180deg) scale(1.1);
+                opacity: 0.7;
+            }
+            75% {
+                transform: translateY(-40px) rotate(270deg) scale(1.2);
+                opacity: 0.9;
+            }
+        }
+
+        /* Main App Container */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: rgba(255, 250, 250, 0.92);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--christmas-gold);
+        }
+
+        /* Header - Christmas Theme */
+        .app-header {
+            background: linear-gradient(135deg, var(--christmas-dark), var(--christmas-green));
+            color: var(--christmas-white);
+            padding: 0 30px;
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            border-bottom: 4px solid var(--christmas-gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.1) 50%, transparent 70%);
+            animation: headerShine 3s ease-in-out infinite;
+        }
+
+        @keyframes headerShine {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 42px;
+            color: var(--christmas-gold);
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from {
+                text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        .header-left h1 {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--christmas-gold), var(--christmas-white));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .date-display {
+            font-size: 16px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 2px solid var(--christmas-gold);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Buttons - Christmas Colors */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--christmas-red), #d42e4a);
+            color: var(--christmas-white);
+            border: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(196, 30, 58, 0.5);
+            border: 2px solid var(--christmas-gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(196, 30, 58, 0.7);
+            background: linear-gradient(135deg, #d42e4a, var(--christmas-red));
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--christmas-green), #2a9a2a);
+            color: var(--christmas-white);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(34, 139, 34, 0.4);
+            border: 2px solid var(--christmas-gold);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(34, 139, 34, 0.6);
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar - Christmas Theme */
+        .sidebar {
+            width: 320px;
+            background: linear-gradient(135deg, var(--christmas-dark), var(--christmas-green));
+            color: var(--christmas-white);
+            display: flex;
+            flex-direction: column;
+            padding: 35px 0;
+            border-right: 4px solid var(--christmas-gold);
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .sidebar::before {
+            content: '🎄';
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            opacity: 0.6;
+        }
+
+        .nav-section {
+            margin-bottom: 40px;
+        }
+
+        .nav-section-title {
+            padding: 0 30px 18px 30px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0.9;
+            border-bottom: 2px solid var(--christmas-gold);
+            font-weight: 600;
+            color: var(--christmas-gold);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 35px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            margin: 8px 20px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 16px;
+            border: 2px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(10px);
+            border-color: var(--christmas-gold);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--christmas-red), #d42e4a);
+            box-shadow: 0 8px 25px rgba(196, 30, 58, 0.4);
+            transform: translateX(10px);
+            border-color: var(--christmas-gold);
+        }
+
+        .nav-item i {
+            width: 25px;
+            text-align: center;
+            font-size: 22px;
+            color: var(--christmas-gold);
+        }
+
+        .badge {
+            background: var(--christmas-gold);
+            color: var(--christmas-dark);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-left: auto;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+            border: 2px solid var(--christmas-white);
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 35px;
+            overflow-y: auto;
+            background: rgba(255, 250, 250, 0.95);
+            position: relative;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* View Header */
+        .view-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 45px;
+            background: var(--card-color);
+            padding: 30px 35px;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            border: 3px solid var(--christmas-gold);
+            background: linear-gradient(135deg, var(--card-color), #fffaf0);
+        }
+
+        .view-header h2 {
+            font-size: 38px;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--christmas-dark), var(--christmas-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Stats Grid - Christmas Colors */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 45px;
+        }
+
+        .stat-card {
+            background: var(--card-color);
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            border: 3px solid var(--christmas-gold);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: linear-gradient(135deg, #fffaf0, var(--card-color));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '❄️';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            opacity: 0.3;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            border-color: var(--christmas-red);
+        }
+
+        .stat-icon {
+            width: 85px;
+            height: 85px;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            color: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .stat-icon.upcoming { 
+            background: linear-gradient(135deg, var(--christmas-red), #d42e4a);
+        }
+        .stat-icon.total { 
+            background: linear-gradient(135deg, var(--christmas-green), #2a9a2a);
+        }
+        .stat-icon.guests { 
+            background: linear-gradient(135deg, var(--christmas-gold), #ffed4e);
+            color: var(--christmas-dark);
+        }
+        .stat-icon.budget { 
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+        }
+
+        .stat-info h3 {
+            font-size: 42px;
+            margin-bottom: 10px;
+            color: var(--christmas-dark);
+            font-weight: 800;
+        }
+
+        .stat-info p {
+            color: var(--christmas-red);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Upcoming Events Section */
+        .upcoming-events-section {
+            background: linear-gradient(135deg, #fffaf0, var(--card-color));
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            border: 3px solid var(--christmas-green);
+            position: relative;
+        }
+
+        .upcoming-events-section::before {
+            content: '🎁';
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 28px;
+            opacity: 0.7;
+        }
+
+        .upcoming-events-section h3 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: var(--christmas-dark);
+            font-weight: 700;
+            border-bottom: 3px solid var(--christmas-red);
+            padding-bottom: 15px;
+        }
+
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .event-item {
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.05), rgba(34, 139, 34, 0.05));
+            padding: 25px;
+            border-radius: 18px;
+            border-left: 6px solid var(--christmas-red);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid var(--christmas-gold);
+        }
+
+        .event-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.1), rgba(34, 139, 34, 0.1));
+            border-color: var(--christmas-red);
+        }
+
+        .event-item h4 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: var(--christmas-dark);
+            font-weight: 700;
+        }
+
+        .event-meta {
+            font-size: 15px;
+            color: var(--christmas-green);
+            display: flex;
+            gap: 25px;
+            margin-top: 10px;
+        }
+
+        .event-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .event-location {
+            margin-top: 10px;
+            font-size: 15px;
+            color: var(--christmas-red);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        /* No Events State */
+        .no-events {
+            text-align: center;
+            padding: 100px 50px;
+            color: var(--christmas-green);
+            background: linear-gradient(135deg, #fffaf0, var(--card-color));
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            border: 3px solid var(--christmas-gold);
+        }
+
+        .no-events i {
+            font-size: 80px;
+            margin-bottom: 25px;
+            opacity: 0.7;
+            display: block;
+            color: var(--christmas-red);
+        }
+
+        .no-events p {
+            margin: 0;
+            font-size: 22px;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        /* Christmas particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .particle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: particleFloat 1.5s ease-out forwards;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-left h1 {
+                font-size: 24px;
+            }
+            
+            .view-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .christmas-element {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Christmas Background -->
+    <div class="christmas-background"></div>
+    <div class="christmas-overlay"></div>
+    
+    <!-- Snow Animation -->
+    <div class="snow" id="snow"></div>
+
+    <!-- Floating Christmas Elements -->
+    <div class="christmas-elements">
+        <div class="christmas-element">🎄</div>
+        <div class="christmas-element">🎅</div>
+        <div class="christmas-element">🤶</div>
+        <div class="christmas-element">🦌</div>
+        <div class="christmas-element">⭐</div>
+        <div class="christmas-element">🔔</div>
+        <div class="christmas-element">🎁</div>
+        <div class="christmas-element">❄️</div>
+    </div>
+
+    <!-- Celebration Particles Container -->
+    <div class="particles" id="particles"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <i class="fas fa-gift logo"></i>
+                <h1>EventPlanner Pro 🎄</h1>
+            </div>
+            <div class="header-right">
+                <div class="date-display" id="current-date">Loading...</div>
+                <button class="btn-primary" id="new-event-btn">
+                    <i class="fas fa-plus"></i> Create Christmas Event
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <nav class="sidebar">
+                <div class="nav-section">
+                    <div class="nav-section-title">Christmas Menu</div>
+                    <div class="nav-item active" data-view="dashboard">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Christmas Dashboard</span>
+                    </div>
+                    <div class="nav-item" data-view="events">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>Holiday Events</span>
+                        <span class="badge" id="events-count">0</span>
+                    </div>
+                    <div class="nav-item" data-view="calendar">
+                        <i class="fas fa-calendar"></i>
+                        <span>Christmas Calendar</span>
+                    </div>
+                    <div class="nav-item" data-view="guests">
+                        <i class="fas fa-users"></i>
+                        <span>Guest List</span>
+                        <span class="badge" id="guests-count">0</span>
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Christmas Settings</div>
+                    <div class="nav-item" data-view="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Holiday Preferences</span>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Content Area -->
+            <main class="content-area">
+                <!-- Dashboard View -->
+                <div id="dashboard-view" class="view active">
+                    <div class="view-header">
+                        <h2>🎅 Christmas Event Dashboard</h2>
+                        <div class="view-actions">
+                            <button class="btn-primary" id="refresh-stats">
+                                <i class="fas fa-sync-alt"></i> Refresh Cheer
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon upcoming">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="upcoming-count">0</h3>
+                                <p>Upcoming Parties</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon total">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-events">0</h3>
+                                <p>Total Celebrations</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon guests">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-guests">0</h3>
+                                <p>Guests Invited</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon budget">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-budget">$0</h3>
+                                <p>Christmas Budget</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upcoming-events-section">
+                        <h3>🎁 Upcoming Christmas Events</h3>
+                        <div class="events-list" id="upcoming-events-list">
+                            <div class="no-events">
+                                <i class="fas fa-tree"></i>
+                                <p>No Christmas events yet. Plan your holiday celebrations!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- All Events View -->
+                <div id="events-view" class="view">
+                    <div class="view-header">
+                        <h2>📅 Holiday Events Management</h2>
+                        <div class="view-actions">
+                            <button class="btn-primary" id="add-event-btn">
+                                <i class="fas fa-plus"></i> Add Christmas Event
+                            </button>
+                        </div>
+                    </div>
+                    <div class="no-events">
+                        <i class="fas fa-snowman"></i>
+                        <p>No holiday events planned yet. Start spreading the Christmas cheer!</p>
+                    </div>
+                </div>
+
+                <!-- Calendar View -->
+                <div id="calendar-view" class="view">
+                    <div class="view-header">
+                        <h2>🗓️ Christmas Calendar</h2>
+                    </div>
+                    <div class="no-events">
+                        <i class="fas fa-calendar-alt"></i>
+                        <p>Your Christmas event calendar coming soon!</p>
+                    </div>
+                </div>
+
+                <!-- Guests View -->
+                <div id="guests-view" class="view">
+                    <div class="view-header">
+                        <h2>👥 Christmas Guest List</h2>
+                    </div>
+                    <div class="no-events">
+                        <i class="fas fa-users"></i>
+                        <p>Manage your Christmas party guests here!</p>
+                    </div>
+                </div>
+
+                <!-- Settings View -->
+                <div id="settings-view" class="view">
+                    <div class="view-header">
+                        <h2>⚙️ Christmas Settings</h2>
+                    </div>
+                    <div class="no-events">
+                        <i class="fas fa-candy-cane"></i>
+                        <p>Customize your Christmas event preferences!</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced JavaScript with Christmas theme
+        class ChristmasEventPlanner {
+            constructor() {
+                this.events = JSON.parse(localStorage.getItem('christmasEvents') || '[]');
+                this.currentView = 'dashboard';
+                this.init();
+            }
+
+            init() {
+                this.updateDateDisplay();
+                this.bindEvents();
+                this.updateStats();
+                this.createSnow();
+                this.startChristmasAnimations();
+            }
+
+            createSnow() {
+                const snowContainer = document.getElementById('snow');
+                for (let i = 0; i < 100; i++) {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    snowflake.style.left = Math.random() * 100 + 'vw';
+                    snowflake.style.width = Math.random() * 5 + 3 + 'px';
+                    snowflake.style.height = snowflake.style.width;
+                    snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+                    snowflake.style.animationDelay = Math.random() * 5 + 's';
+                    snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+                    snowContainer.appendChild(snowflake);
+                }
+            }
+
+            startChristmasAnimations() {
+                // Add continuous Christmas animations
+                setInterval(() => {
+                    this.createChristmasParticles(
+                        Math.random() * window.innerWidth,
+                        Math.random() * 100
+                    );
+                }, 4000);
+            }
+
+            updateDateDisplay() {
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                const dateString = new Date().toLocaleDateString('en-US', options);
+                document.getElementById('current-date').textContent = dateString + ' 🎄';
+            }
+
+            bindEvents() {
+                // Navigation
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        const view = e.currentTarget.dataset.view;
+                        this.switchView(view);
+                        this.createChristmasParticles(e.clientX, e.clientY);
+                    });
+                });
+
+                // Buttons
+                document.getElementById('new-event-btn').addEventListener('click', () => {
+                    this.showEventModal();
+                });
+
+                document.getElementById('add-event-btn').addEventListener('click', () => {
+                    this.showEventModal();
+                });
+
+                document.getElementById('refresh-stats').addEventListener('click', () => {
+                    this.updateStats();
+                    this.createChristmasParticles(window.innerWidth / 2, 100);
+                    this.showNotification('Christmas stats updated! 🎅');
+                });
+
+                // Stat cards click
+                document.querySelectorAll('.stat-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        card.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            card.style.transform = '';
+                        }, 150);
+                        this.createChristmasParticles(
+                            card.getBoundingClientRect().left + card.offsetWidth / 2,
+                            card.getBoundingClientRect().top + card.offsetHeight / 2
+                        );
+                    });
+                });
+            }
+
+            switchView(viewName) {
+                // Update navigation
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.toggle('active', item.dataset.view === viewName);
+                });
+
+                // Update views
+                document.querySelectorAll('.view').forEach(view => {
+                    view.classList.toggle('active', view.id === `${viewName}-view`);
+                });
+
+                this.currentView = viewName;
+            }
+
+            showEventModal() {
+                this.showNotification('Planning a new Christmas event... 🎁');
+                this.createChristmasParticles(window.innerWidth / 2, window.innerHeight / 2);
+                
+                // Simulate adding a Christmas event after delay
+                setTimeout(() => {
+                    this.addChristmasEvent();
+                }, 1500);
+            }
+
+            addChristmasEvent() {
+                const christmasEvents = [
+                    {
+                        name: "Christmas Eve Family Dinner",
+                        date: new Date(new Date().getFullYear(), 11, 24).toISOString().split('T')[0],
+                        type: "Family Dinner",
+                        guests: 25,
+                        budget: 800,
+                        location: "Home Sweet Home"
+                    },
+                    {
+                        name: "Office Christmas Party",
+                        date: new Date(new Date().getFullYear(), 11, 15).toISOString().split('T')[0],
+                        type: "Office Party",
+                        guests: 100,
+                        budget: 3000,
+                        location: "Company Headquarters"
+                    },
+                    {
+                        name: "Christmas Charity Gala",
+                        date: new Date(new Date().getFullYear(), 11, 18).toISOString().split('T')[0],
+                        type: "Charity Event",
+                        guests: 200,
+                        budget: 5000,
+                        location: "Grand Ballroom"
+                    },
+                    {
+                        name: "New Year's Eve Celebration",
+                        date: new Date(new Date().getFullYear(), 11, 31).toISOString().split('T')[0],
+                        type: "New Year Party",
+                        guests: 75,
+                        budget: 2000,
+                        location: "City Center Plaza"
+                    }
+                ];
+
+                const randomEvent = christmasEvents[Math.floor(Math.random() * christmasEvents.length)];
+                this.events.push({
+                    id: Date.now().toString(),
+                    ...randomEvent,
+                    createdAt: new Date().toISOString()
+                });
+
+                localStorage.setItem('christmasEvents', JSON.stringify(this.events));
+                this.updateStats();
+                this.createChristmasParticles(window.innerWidth / 2, window.innerHeight / 2);
+                this.showNotification('New Christmas event created! 🎉');
+            }
+
+            updateStats() {
+                const totalEvents = this.events.length;
+                const upcomingEvents = this.events.filter(event => 
+                    new Date(event.date) >= new Date().setHours(0,0,0,0)
+                ).length;
+                const totalGuests = this.events.reduce((sum, event) => sum + (event.guests || 0), 0);
+                const totalBudget = this.events.reduce((sum, event) => sum + (event.budget || 0), 0);
+
+                // Update counts with animation
+                this.animateValue('events-count', parseInt(document.getElementById('events-count').textContent) || 0, totalEvents);
+                this.animateValue('guests-count', parseInt(document.getElementById('guests-count').textContent) || 0, totalGuests);
+                this.animateValue('upcoming-count', parseInt(document.getElementById('upcoming-count').textContent) || 0, upcomingEvents);
+                this.animateValue('total-events', parseInt(document.getElementById('total-events').textContent) || 0, totalEvents);
+                this.animateValue('total-guests', parseInt(document.getElementById('total-guests').textContent) || 0, totalGuests);
+                
+                document.getElementById('total-budget').textContent = `$${totalBudget.toLocaleString()}`;
+
+                // Update upcoming events list
+                this.updateUpcomingEvents();
+            }
+
+            animateValue(elementId, start, end) {
+                const element = document.getElementById(elementId);
+                const duration = 1000;
+                const startTime = performance.now();
+                
+                const updateValue = (currentTime) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    const value = Math.floor(start + (end - start) * progress);
+                    element.textContent = value;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(updateValue);
+                    }
+                };
+                
+                requestAnimationFrame(updateValue);
+            }
+
+            updateUpcomingEvents() {
+                const upcomingList = document.getElementById('upcoming-events-list');
+                const upcomingEvents = this.events
+                    .filter(event => new Date(event.date) >= new Date().setHours(0,0,0,0))
+                    .sort((a, b) => new Date(a.date) - new Date(b.date))
+                    .slice(0, 4);
+
+                if (upcomingEvents.length === 0) {
+                    upcomingList.innerHTML = `
+                        <div class="no-events">
+                            <i class="fas fa-tree"></i>
+                            <p>No Christmas events scheduled. Plan your holiday celebrations!</p>
+                        </div>
+                    `;
+                } else {
+                    upcomingList.innerHTML = upcomingEvents.map(event => `
+                        <div class="event-item" onclick="app.createChristmasParticles(event.clientX, event.clientY)">
+                            <h4>${event.name}</h4>
+                            <div class="event-meta">
+                                <span><i class="fas fa-calendar"></i> ${new Date(event.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
+                                <span><i class="fas fa-tag"></i> ${event.type}</span>
+                                <span><i class="fas fa-users"></i> ${event.guests.toLocaleString()} guests</span>
+                            </div>
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i> ${event.location}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            createChristmasParticles(x, y) {
+                const particles = document.getElementById('particles');
+                const colors = ['#c41e3a', '#228b22', '#ffd700', '#fffafa', '#8b4513'];
+                
+                for (let i = 0; i < 15; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
+                    particle.style.setProperty('--ty', (Math.random() - 0.5) * 300 + 'px');
+                    
+                    particles.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.remove();
+                        }
+                    }, 1500);
+                }
+            }
+
+            showNotification(message) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 30px;
+                    background: linear-gradient(135deg, var(--christmas-red), #d42e4a);
+                    color: var(--christmas-white);
+                    padding: 20px 30px;
+                    border-radius: 15px;
+                    font-weight: 600;
+                    font-size: 16px;
+                    box-shadow: 0 10px 30px rgba(196, 30, 58, 0.5);
+                    z-index: 1002;
+                    animation: slideInRight 0.5s ease, slideOutRight 0.5s ease 2.5s forwards;
+                    border: 2px solid var(--christmas-gold);
+                `;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
+        // Add notification animations
+        const notificationStyles = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = notificationStyles;
+        document.head.appendChild(styleSheet);
+
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            window.app = new ChristmasEventPlanner();
+        });
+    </script>
+</body>
+</html>
