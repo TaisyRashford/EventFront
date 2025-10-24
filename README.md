@@ -41,4 +41,4 @@ For questions or feedback, reach out at [mainaphinee@gmail.com]
 
 ---
 
-You can copy this into your `README.md` file. Want me to customize it further with your actual tech stack or demo file names? Just drop the details and I’ll polish it up for you.
+
